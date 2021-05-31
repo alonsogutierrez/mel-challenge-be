@@ -1,22 +1,15 @@
 const HTTPCodes = require('http-status-codes');
 
+const ProductUseCases = require('./../use-cases/search');
+
 const logger = console;
 
-const action = (req, res) => {
+const action = async (req, res) => {
   try {
-    const { query } = req.query;
-    logger.info('Begin to search products: ', query);
-    //  TODO: Call mel BFF endpoint to get all products
-    res.status(HTTPCodes.OK).send({
-      response: {
-        products: [
-          {
-            id: 1,
-            name: 'Test product'
-          }
-        ]
-      }
-    });
+    const { q } = req.query;
+    logger.info('Begin to search products: ', q);
+    const productsResponse = await ProductUseCases.getProductsByText(q);
+    res.status(HTTPCodes.OK).send(productsResponse);
   } catch (err) {
     res.status(HTTPCodes.INTERNAL_SERVER_ERROR).send({
       error: `Can't search products: ${err.message}`
@@ -24,7 +17,7 @@ const action = (req, res) => {
   }
 };
 
-const route = '/search';
+const route = '/api/items';
 const method = 'GET';
 
 module.exports = {
