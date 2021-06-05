@@ -1,6 +1,6 @@
 const HTTPCodes = require('http-status-codes');
 
-const ProductUseCases = require('./../use-cases/search');
+const ProductUseCases = require('../use-cases/search');
 
 const logger = console;
 

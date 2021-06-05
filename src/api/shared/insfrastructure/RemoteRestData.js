@@ -3,15 +3,13 @@ const HTTPStatus = require('http-status-codes');
 
 const logger = console;
 
-const GETRequest = async (baseURL, url, query) => {
+const GETRequest = async (baseURL, url, params) => {
   try {
     const response = await axios({
       baseURL,
       method: 'GET',
       url,
-      params: {
-        q: query
-      }
+      params
     });
     return response.data;
   } catch (err) {
@@ -19,8 +17,8 @@ const GETRequest = async (baseURL, url, query) => {
       statusCode: HTTPStatus.SERVICE_UNAVAILABLE,
       baseURL,
       url,
-      query,
-      errorDescription: e.message
+      params,
+      errorDescription: err.message
     });
     throw new Error(`Can't get products from API: ${err.message}`);
   }
